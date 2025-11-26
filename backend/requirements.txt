@@ -1,0 +1,2 @@
+bottle>=0.12.25
+gunicorn>=21.0.0
