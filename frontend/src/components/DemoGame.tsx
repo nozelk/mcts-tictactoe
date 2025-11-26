@@ -198,7 +198,7 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   
   // Speed control
-  const speed: 'slow' | 'medium' | 'fast' = 'slow';
+  const speed = 'slow' as const;
   const speedDelays = { slow: 800, medium: 300, fast: 50 };
   
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
