@@ -196,9 +196,10 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
   const [totalActionsTillNow, setTotalActionsTillNow] = useState(0);
   const [bestMove, setBestMove] = useState<number | null>(null);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const [serverSleeping, setServerSleeping] = useState(false);
   
   // Speed control
-  const [speed, setSpeed] = useState<'slow' | 'medium' | 'fast'>('slow');
+  const speed: 'slow' | 'medium' | 'fast' = 'slow';
   const speedDelays = { slow: 800, medium: 300, fast: 50 };
   
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -313,9 +314,16 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
       setCurrentActionIdx(0);
       setTotalActionsTillNow(0);
       setVisState(VisualizationState.VISUALIZING);
+      setServerSleeping(false);
       
     } catch (error) {
       console.error('MCTS error:', error);
+      // Server is probably sleeping (cold start)
+      setServerSleeping(true);
+      // Retry after 3 seconds
+      setTimeout(() => {
+        setServerSleeping(false);
+      }, 5000);
     }
   }, [board, currentPlayer, config, moveNumber]);
 
@@ -544,6 +552,18 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
 
   return (
     <div className={`demo-game theme-${theme}`}>
+      {/* Server sleeping popup */}
+      {serverSleeping && (
+        <div className="server-sleeping-overlay">
+          <div className="server-sleeping-popup">
+            <div className="sleeping-icon">😴</div>
+            <h3>Server se prebuja...</h3>
+            <p>Backend server spi, počakaj nekaj sekund.</p>
+            <div className="sleeping-loader"></div>
+          </div>
+        </div>
+      )}
+      
       <div className="demo-content">
         {/* Left side - Configuration */}
         <div className="demo-config">

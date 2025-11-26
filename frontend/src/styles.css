@@ -1817,6 +1817,79 @@ html, body {
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
+  position: relative;
+}
+
+/* Server sleeping popup */
+.server-sleeping-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.server-sleeping-popup {
+  background: var(--panel-bg);
+  border-radius: 16px;
+  padding: 32px 48px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.sleeping-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: sleepBounce 2s ease-in-out infinite;
+}
+
+@keyframes sleepBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.server-sleeping-popup h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px 0;
+}
+
+.server-sleeping-popup p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+}
+
+.sleeping-loader {
+  width: 40px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.sleeping-loader::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: loadSlide 1.5s ease-in-out infinite;
+}
+
+@keyframes loadSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
 }
 
 .demo-header {
