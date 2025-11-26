@@ -19,6 +19,9 @@ import {
   copyTree
 } from '../tree';
 
+// Use same API URL as main game
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
+
 const EMPTY_BOARD: BoardState = ['', '', '', '', '', '', '', '', ''];
 
 interface DemoGameProps {
@@ -269,7 +272,7 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
     const aiSymbol = currentPlayer === 'ai1' ? 'X' : 'O';
     
     try {
-      const response = await fetch('http://localhost:8080/mcts', {
+      const response = await fetch(`${API_BASE}/mcts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
