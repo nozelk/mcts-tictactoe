@@ -1,102 +1,86 @@
-# MCTS Tic-Tac-Toe Vizualizacija
+# MCTS Tic-Tac-Toe Visualization
 
-Vizualizacija algoritma Monte Carlo Tree Search (MCTS) za igro Tic-Tac-Toe.
+Interactive visualization of the Monte Carlo Tree Search (MCTS) algorithm for Tic-Tac-Toe.
 
-## Struktura projekta
+🎮 **[Live Demo](https://nozelk.github.io/mcts-tictactoe/)**
 
-```
-MCSTtsx/
-├── backend/          # Python Bottle API
-│   ├── app.py        # Glavni strežnik
-│   ├── mcts.py       # MCTS algoritem
-│   ├── tictactoe.py  # Logika igre
-│   ├── tree.py       # Drevesna struktura
-│   └── requirements.txt
-│
-└── frontend/         # React TypeScript aplikacija
-    ├── src/
-    │   ├── components/
-    │   │   ├── GameBoard.tsx
-    │   │   ├── ControlPanel.tsx
-    │   │   └── TreeVisualization.tsx
-    │   ├── App.tsx
-    │   ├── main.tsx
-    │   ├── types.ts
-    │   ├── tree.ts
-    │   ├── api.ts
-    │   └── styles.css
-    ├── package.json
-    └── vite.config.ts
-```
+## Features
 
-## Zagon
+- Step-by-step MCTS algorithm visualization
+- Interactive game board - play against the AI
+- Multiple themes (Dark, Light, Blue, Forest, Sunset, Purple, Ocean, Glass)
+- Multi-language support (Slovenian, English, German)
+- UCB1 calculator with live formula display
+- Adjustable iteration count (50-1000+)
 
-### 1. Backend (Python Bottle)
+## How MCTS Works
 
-```powershell
-cd backend
+MCTS has 4 phases in each iteration:
 
-# Ustvari virtualno okolje (opcijsko)
-python -m venv venv
-.\venv\Scripts\Activate
-
-# Namesti odvisnosti
-pip install -r requirements.txt
-
-# Zaženi strežnik
-python app.py
-```
-
-Backend teče na `http://localhost:8080`
-
-### 2. Frontend (React + Vite)
-
-```powershell
-cd frontend
-
-# Namesti odvisnosti
-npm install
-
-# Zaženi razvojni strežnik
-npm run dev
-```
-
-Frontend teče na `http://localhost:3000`
-
-## Uporaba
-
-1. **Izberi kdo začne** - Človek ali Stroj
-2. **Nastavi število iteracij** - Več iteracij = boljše odločitve MCTS
-3. **Klikni "Zaženi MCTS"** - Algoritem se zažene in ustvari drevo
-4. **Vizualiziraj korake**:
-   - **Naslednja akcija** - Pokaže naslednji korak algoritma
-   - **Naslednja iteracija** - Preskoči na naslednjo iteracijo
-   - **Avto predvajanje** - Avtomatsko predvaja vse korake
-
-## MCTS Algoritem
-
-MCTS ima 4 faze v vsaki iteraciji:
-
-1. **Selection (Izbira)** 🔴 - Izbere pot v drevesu z UCB1 formulo
-2. **Expansion (Širitev)** 🟢 - Doda novo vozlišče (možno potezo)
-3. **Simulation (Simulacija)** 🔵 - Odigra naključno igro do konca
-4. **Backpropagation (Povratno širjenje)** 🟣 - Posodobi statistike nazaj do korena
+1. **Selection** 🔴 - Navigate tree using UCB1 formula
+2. **Expansion** 🟢 - Add new node (possible move)
+3. **Simulation** 🔵 - Play random game to the end
+4. **Backpropagation** 🟣 - Update statistics back to root
 
 ### UCB1 Formula
 
 $$UCB1 = \frac{w_i}{n_i} + \sqrt{\frac{2 \ln N}{n_i}}$$
 
-Kjer:
-- $w_i$ = število zmag vozlišča
-- $n_i$ = število obiskov vozlišča
-- $N$ = število obiskov starša
+Where:
+- $w_i$ = wins for the node
+- $n_i$ = visits for the node
+- $N$ = visits for the parent node
 
-## Tehnologije
+## Tech Stack
 
+- **Frontend**: React 18, TypeScript, Vite, HTML5 Canvas
 - **Backend**: Python 3, Bottle
-- **Frontend**: React 18, TypeScript, Vite
-- **Vizualizacija**: HTML5 Canvas
+- **Hosting**: GitHub Pages (frontend), Render (backend)
 
-## Avtor
+## Local Development
 
-Bazirano na [vgarciasc/mcts-viz](https://github.com/vgarciasc/mcts-viz)
+### Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+Runs on `http://localhost:8080`
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Runs on `http://localhost:3000`
+
+## Project Structure
+
+```
+├── backend/
+│   ├── app.py          # API server
+│   ├── mcts.py         # MCTS algorithm
+│   ├── tictactoe.py    # Game logic
+│   └── tree.py         # Tree data structure
+│
+└── frontend/
+    └── src/
+        ├── components/
+        │   ├── GameBoard.tsx
+        │   ├── ControlPanel.tsx
+        │   ├── StartScreen.tsx
+        │   └── TreeVisualization.tsx
+        ├── App.tsx
+        └── styles.css
+```
+
+## Credits
+
+Based on [vgarciasc/mcts-viz](https://github.com/vgarciasc/mcts-viz)
+
+## License
+
+MIT
