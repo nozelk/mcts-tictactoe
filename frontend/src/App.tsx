@@ -2,7 +2,8 @@ import { useState, useCallback, useRef } from 'react';
 import { GameBoard } from './components/GameBoard';
 import { TreeVisualization } from './components/TreeVisualization';
 import { ControlPanel } from './components/ControlPanel';
-import { StartScreen, Theme, Language } from './components/StartScreen';
+import { StartScreen, Theme, Language, AppMode } from './components/StartScreen';
+import { MonteCarloPi } from './components/MonteCarloPi';
 import { 
   BoardState, 
   Player, 
@@ -26,6 +27,7 @@ const EMPTY_BOARD: BoardState = ['', '', '', '', '', '', '', '', ''];
 function App() {
   // App state
   const [started, setStarted] = useState(false);
+  const [appMode, setAppMode] = useState<AppMode>('mcts');
   const [gameStarted, setGameStarted] = useState(false); // After choosing who starts
   const [theme, setTheme] = useState<Theme>('dark');
   const [language, setLanguage] = useState<Language>('sl');
@@ -394,6 +396,19 @@ function App() {
   const actionProgress = `(${totalActionsTillNow}/${totalActions > 0 ? totalActions - 1 : 0})`;
   const iterationProgress = `(${currentIterationIdx}/${actionTrace.length > 0 ? actionTrace.length - 1 : 0})`;
 
+  // Handle start with mode selection
+  const handleStart = (mode: AppMode) => {
+    setAppMode(mode);
+    setStarted(true);
+  };
+
+  // Handle back to start screen
+  const handleBackToStart = () => {
+    setStarted(false);
+    setGameStarted(false);
+    resetGame();
+  };
+
   // If not started, show start screen
   if (!started) {
     return (
@@ -402,7 +417,18 @@ function App() {
         language={language}
         onThemeChange={setTheme}
         onLanguageChange={setLanguage}
-        onStart={() => setStarted(true)}
+        onStart={handleStart}
+      />
+    );
+  }
+
+  // If Monte Carlo Pi mode
+  if (appMode === 'pi') {
+    return (
+      <MonteCarloPi
+        theme={theme}
+        language={language}
+        onBack={handleBackToStart}
       />
     );
   }
