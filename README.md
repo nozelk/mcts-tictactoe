@@ -79,7 +79,13 @@ Runs on `http://localhost:3000`
 
 ## Credits
 
-Based on [vgarciasc/mcts-viz](https://github.com/vgarciasc/mcts-viz)
+Inspired by [vgarciasc/mcts-viz](https://github.com/vgarciasc/mcts-viz)
+
+This project extends the original concept with:
+- 8 visual themes including iOS-style Liquid Glass
+- Multi-language support (Slovenian, English, German)
+- Live UCB1 calculator with formula visualization
+- Enhanced UI/UX and interactive gameplay
 
 ## License
 
