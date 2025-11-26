@@ -151,11 +151,27 @@ export const MonteCarloPi: React.FC<MonteCarloPiProps> = ({ theme, language, onB
   const [isRunning, setIsRunning] = useState(false);
   const [speed, setSpeed] = useState<'slow' | 'fast' | 'instant'>('fast');
   const [points, setPoints] = useState<{x: number, y: number, inside: boolean}[]>([]);
+  const [canvasSize, setCanvasSize] = useState(500);
   
   const animationRef = useRef<number | null>(null);
   const currentIndexRef = useRef(0);
 
-  const CANVAS_SIZE = 650;
+  // Calculate canvas size based on viewport
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      // Canvas should be max 60% of viewport height or 40% of width
+      const maxByHeight = Math.floor(vh * 0.65);
+      const maxByWidth = Math.floor(vw * 0.35);
+      const size = Math.min(maxByHeight, maxByWidth, 700);
+      setCanvasSize(Math.max(300, size)); // minimum 300px
+    };
+    
+    updateCanvasSize();
+    window.addEventListener('resize', updateCanvasSize);
+    return () => window.removeEventListener('resize', updateCanvasSize);
+  }, []);
 
   // Generate all points at once
   const generatePoints = useCallback((count: number) => {
@@ -180,12 +196,12 @@ export const MonteCarloPi: React.FC<MonteCarloPiProps> = ({ theme, language, onB
     // Clear canvas
     ctx.fillStyle = theme === 'light' ? '#f8fafc' : 
                     theme === 'glass' ? 'rgba(255,255,255,0.1)' : '#1a1a2e';
-    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
 
     // Draw quarter circle - polmer je enak velikosti canvasa
     ctx.beginPath();
-    ctx.arc(0, CANVAS_SIZE, CANVAS_SIZE, -Math.PI/2, 0);
-    ctx.lineTo(0, CANVAS_SIZE);
+    ctx.arc(0, canvasSize, canvasSize, -Math.PI/2, 0);
+    ctx.lineTo(0, canvasSize);
     ctx.closePath();
     ctx.fillStyle = theme === 'glass' ? 'rgba(99, 102, 241, 0.3)' :
                     theme === 'light' ? 'rgba(99, 102, 241, 0.2)' : 'rgba(99, 102, 241, 0.35)';
@@ -196,8 +212,8 @@ export const MonteCarloPi: React.FC<MonteCarloPiProps> = ({ theme, language, onB
 
     // Draw points
     pointsToDraw.forEach(point => {
-      const canvasX = point.x * CANVAS_SIZE;
-      const canvasY = CANVAS_SIZE - (point.y * CANVAS_SIZE);
+      const canvasX = point.x * canvasSize;
+      const canvasY = canvasSize - (point.y * canvasSize);
       
       ctx.beginPath();
       ctx.arc(canvasX, canvasY, 2.5, 0, Math.PI * 2);
@@ -208,8 +224,8 @@ export const MonteCarloPi: React.FC<MonteCarloPiProps> = ({ theme, language, onB
     // Draw border
     ctx.strokeStyle = theme === 'light' ? '#cbd5e1' : 'rgba(255,255,255,0.3)';
     ctx.lineWidth = 2;
-    ctx.strokeRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-  }, [theme, CANVAS_SIZE]);
+    ctx.strokeRect(0, 0, canvasSize, canvasSize);
+  }, [theme, canvasSize]);
 
   // Animation loop
   const animate = useCallback(() => {
@@ -341,8 +357,8 @@ export const MonteCarloPi: React.FC<MonteCarloPiProps> = ({ theme, language, onB
         <div className="mc-left">
           <canvas 
             ref={canvasRef} 
-            width={CANVAS_SIZE} 
-            height={CANVAS_SIZE}
+            width={canvasSize} 
+            height={canvasSize}
             className="mc-canvas"
           />
           

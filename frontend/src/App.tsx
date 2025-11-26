@@ -404,11 +404,31 @@ function App() {
 
   // Handle back to start screen
   const handleBackToStart = () => {
-    setStarted(false);
-    setGameStarted(false);
+    // Stop any running MCTS or auto-play
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+      autoPlayRef.current = null;
+    }
+    setIsAutoPlaying(false);
+    setIsRunning(false);
+    
+    // Reset visualization state
+    setVisState(VisualizationState.NONE);
+    setActionTrace([]);
+    setFinalTree(null);
+    setReconstructedTree(null);
+    setDrawTree(null);
+    setCurrentIterationIdx(0);
+    setCurrentActionIdx(0);
+    setTotalActionsTillNow(0);
+    setBestMove(null);
+    
     // Reset game state
     setBoard([...EMPTY_BOARD]);
     setWinner(null);
+    setGameOver(false);
+    setGameStarted(false);
+    setStarted(false);
   };
 
   // If not started, show start screen
