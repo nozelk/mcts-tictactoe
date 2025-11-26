@@ -3,6 +3,7 @@ MCTS Tic-Tac-Toe Backend - Python Bottle
 """
 from bottle import Bottle, response, request, static_file, run
 import json
+import random
 from mcts import MCTS
 from tictactoe import TicTacToeBoard, PLAYER
 
@@ -21,19 +22,33 @@ def options_handler(path=None):
     return {}
 
 @app.route('/api/mcts', method='POST')
+@app.route('/mcts', method='POST')
 def run_mcts():
     """
     Run MCTS algorithm on the given board state
     Request body: {
         "board": [9 elements: "", "X", "O"],
-        "player": "machine" | "human",
-        "iterations": number
+        "player": "X" | "O" | "machine" | "human",
+        "iterations": number,
+        "seed": optional number for reproducibility
     }
     """
     data = request.json
     board_state = data.get('board', [''] * 9)
-    player = PLAYER.MACHINE if data.get('player', 'machine') == 'machine' else PLAYER.HUMAN
+    
+    # Handle player - can be "X", "O", "machine", or "human"
+    player_str = data.get('player', 'machine')
+    if player_str in ['X', 'machine']:
+        player = PLAYER.MACHINE
+    else:
+        player = PLAYER.HUMAN
+    
     iterations = data.get('iterations', 100)
+    seed = data.get('seed', None)
+    
+    # Set random seed if provided (for reproducible results)
+    if seed is not None:
+        random.seed(seed)
     
     # Create board from state
     board = TicTacToeBoard()

@@ -694,6 +694,12 @@ html, body {
   color: white;
 }
 
+/* Custom symbols for Demo mode */
+.board-cell.has-symbol {
+  background: var(--accent);
+  color: white;
+}
+
 /* ==================== CONTROL GROUPS ==================== */
 .control-group {
   display: flex;
@@ -1301,6 +1307,18 @@ html, body {
   font-family: 'Fira Code', 'Consolas', monospace;
 }
 
+.formula-display-katex {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.formula-display-katex .katex {
+  font-size: 1.3em;
+  color: var(--text);
+}
+
 .formula-frac {
   display: inline-flex;
   flex-direction: column;
@@ -1789,6 +1807,762 @@ html, body {
 
 .theme-glass .mode-desc {
   color: rgba(255, 255, 255, 0.7);
+}
+
+/* ==================== DEMO GAME (AI vs AI) ==================== */
+.demo-game {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.demo-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-header .back-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.demo-header .back-btn:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Minimal header for demo */
+.demo-header-minimal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-header-minimal .back-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-radius: 6px;
+  background: var(--button-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.demo-header-minimal .back-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.demo-title-mini {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.demo-title-section h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0;
+}
+
+.demo-title-section p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.demo-content {
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  padding: 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Left panel - config + board + UCB */
+.demo-config {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.demo-back-btn {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  text-align: left;
+}
+
+.demo-back-btn:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Board section in left panel */
+.demo-board-section {
+  background: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.demo-board-section .board-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.demo-board-section .turn-label {
+  color: var(--text-secondary);
+}
+
+.demo-board-section .turn-value {
+  font-weight: 700;
+}
+
+.demo-board-section .turn-value.ai1 {
+  color: var(--machine-color);
+}
+
+.demo-board-section .turn-value.ai2 {
+  color: var(--human-color);
+}
+
+.demo-board-section .move-num {
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.demo-board-section .game-board {
+  display: grid !important;
+  grid-template-columns: repeat(3, 60px) !important;
+  grid-template-rows: repeat(3, 60px) !important;
+  gap: 4px !important;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.demo-board-section .board-cell {
+  width: 60px !important;
+  height: 60px !important;
+  font-size: 24px !important;
+  font-weight: 800;
+}
+
+.demo-board-section .mcts-progress {
+  margin-top: 10px;
+  max-width: none;
+}
+
+.demo-board-section .game-result {
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* UCB Panel in demo */
+.demo-ucb-panel {
+  background: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.demo-ucb-panel .ucb-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.demo-ucb-panel .ucb-formula-mini {
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--button-bg);
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.demo-ucb-panel .ucb-formula-katex {
+  background: var(--button-bg);
+  padding: 10px 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.demo-ucb-panel .ucb-formula-katex .katex {
+  font-size: 1.1em;
+  color: var(--text);
+}
+
+.demo-ucb-panel .ucb-values-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.demo-ucb-panel .ucb-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.demo-ucb-panel .ucb-var {
+  font-weight: 700;
+  color: var(--accent);
+  width: 16px;
+  font-size: 14px;
+}
+
+.demo-ucb-panel .ucb-val {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.demo-ucb-panel .ucb-desc {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.demo-ucb-panel .ucb-hint-mini {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 8px;
+}
+
+.config-section {
+  background: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 14px;
+}
+
+.config-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.preset-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.preset-buttons button {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-buttons button:hover {
+  border-color: var(--accent);
+}
+
+.preset-buttons button.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* AI Config */
+.ai-config {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--button-bg);
+}
+
+.ai-box.ai1 {
+  border: 2px solid var(--machine-color);
+}
+
+.ai-box.ai2 {
+  border: 2px solid var(--human-color);
+}
+
+.ai-symbol {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.ai-box.ai1 .ai-symbol {
+  color: var(--machine-color);
+}
+
+.ai-box.ai2 .ai-symbol {
+  color: var(--human-color);
+}
+
+.ai-strength {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ai-box input {
+  width: 80px;
+  padding: 6px 8px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-bg);
+  color: var(--text);
+}
+
+.iter-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.vs {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+/* Seed */
+.seed-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.seed-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.seed-input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: monospace;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  color: var(--text);
+}
+
+/* Speed buttons */
+.speed-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.speed-buttons button {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speed-buttons button:hover {
+  border-color: var(--accent);
+}
+
+.speed-buttons button.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Demo buttons */
+.demo-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.demo-buttons button {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.start-btn, .run-btn {
+  flex: 1 1 100%;
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+
+.start-btn:hover, .run-btn:hover {
+  opacity: 0.9;
+}
+
+.play-btn {
+  background: var(--success);
+  color: white;
+  border: none;
+}
+
+.pause-btn {
+  background: var(--danger);
+  color: white;
+  border: none;
+}
+
+.step-btn {
+  background: var(--button-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.step-btn:hover {
+  border-color: var(--accent);
+}
+
+.move-btn {
+  flex: 1 1 100%;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  border: none;
+}
+
+.reset-btn {
+  background: var(--button-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.reset-btn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Center - Game */
+.demo-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-width: 300px;
+}
+
+.game-info {
+  text-align: center;
+}
+
+.turn-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.turn-label {
+  color: var(--text-secondary);
+}
+
+.turn-value {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.turn-value.ai1 {
+  color: var(--machine-color);
+}
+
+.turn-value.ai2 {
+  color: var(--human-color);
+}
+
+.move-counter {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.game-result {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* Demo GameBoard - explicit styling */
+.demo-center .game-board {
+  display: grid !important;
+  grid-template-columns: repeat(3, 70px);
+  grid-template-rows: repeat(3, 70px);
+  gap: 4px;
+  background: var(--panel-bg);
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.demo-center .board-cell {
+  width: 70px;
+  height: 70px;
+  font-size: 32px;
+  font-weight: 800;
+  border-radius: 8px;
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: default;
+}
+
+.demo-center .board-cell.X {
+  background: var(--machine-color);
+  color: white;
+}
+
+.demo-center .board-cell.O {
+  background: var(--human-color);
+  color: white;
+}
+
+/* MCTS Progress */
+.mcts-progress {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  background: var(--panel-bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--button-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
+  transition: width 0.2s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.phase-info {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.phase-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.best-move-indicator {
+  padding: 10px 16px;
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Tree visualization (right) */
+.demo-tree {
+  flex: 1;
+  min-width: 400px;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.tree-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Explanation panel */
+.explanation-panel {
+  padding: 12px 20px;
+  background: var(--panel-bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.explanation-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.explanation-text {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Glass theme for Demo */
+.theme-glass.demo-game {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 30%, #818cf8 60%, #a78bfa 100%);
+}
+
+.theme-glass .demo-header,
+.theme-glass .config-section,
+.theme-glass .demo-buttons,
+.theme-glass .mcts-progress,
+.theme-glass .demo-tree,
+.theme-glass .explanation-panel {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: none;
+}
+
+.theme-glass .ai-box {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-glass .ai-box input,
+.theme-glass .seed-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+}
+
+.theme-glass .preset-buttons button,
+.theme-glass .speed-buttons button {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+}
+
+.theme-glass .preset-buttons button.active,
+.theme-glass .speed-buttons button.active {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.theme-glass .step-btn,
+.theme-glass .reset-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+}
+
+/* Responsive Demo */
+@media (max-width: 1100px) {
+  .demo-tree {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .demo-content {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .demo-config {
+    width: 100%;
+  }
+  
+  .ai-config {
+    flex-direction: column;
+  }
+  
+  .ai-box {
+    width: 100%;
+  }
 }
 
 /* ==================== MONTE CARLO PI ==================== */

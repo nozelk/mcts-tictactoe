@@ -4,6 +4,7 @@ import { TreeVisualization } from './components/TreeVisualization';
 import { ControlPanel } from './components/ControlPanel';
 import { StartScreen, Theme, Language, AppMode } from './components/StartScreen';
 import { MonteCarloPi } from './components/MonteCarloPi';
+import { DemoGame } from './components/DemoGame';
 import { 
   BoardState, 
   Player, 
@@ -448,6 +449,17 @@ function App() {
   if (appMode === 'pi') {
     return (
       <MonteCarloPi
+        theme={theme}
+        language={language}
+        onBack={handleBackToStart}
+      />
+    );
+  }
+
+  // If Demo AI vs AI mode
+  if (appMode === 'demo') {
+    return (
+      <DemoGame
         theme={theme}
         language={language}
         onBack={handleBackToStart}

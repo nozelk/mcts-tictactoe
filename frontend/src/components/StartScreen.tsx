@@ -2,7 +2,7 @@ import React from 'react';
 
 export type Theme = 'dark' | 'light' | 'blue' | 'forest' | 'sunset' | 'purple' | 'ocean' | 'glass';
 export type Language = 'sl' | 'en' | 'de';
-export type AppMode = 'mcts' | 'pi';
+export type AppMode = 'mcts' | 'pi' | 'demo';
 
 interface StartScreenProps {
   theme: Theme;
@@ -23,6 +23,8 @@ const translations = {
     mode_mcts_desc: 'Monte Carlo Tree Search algoritem',
     mode_pi: '🎯 Izračun π',
     mode_pi_desc: 'Oceni π z naključnimi točkami',
+    mode_demo: '🎬 Demo AI vs AI',
+    mode_demo_desc: 'Predstavitveni način za razlago MCTS',
     light: '☀️ Svetla',
     dark: '🌙 Temna',
     blue: '💙 Modra',
@@ -43,6 +45,8 @@ const translations = {
     mode_mcts_desc: 'Monte Carlo Tree Search algorithm',
     mode_pi: '🎯 Estimate π',
     mode_pi_desc: 'Estimate π with random points',
+    mode_demo: '🎬 Demo AI vs AI',
+    mode_demo_desc: 'Presentation mode for explaining MCTS',
     light: '☀️ Light',
     dark: '🌙 Dark',
     blue: '💙 Blue',
@@ -63,6 +67,8 @@ const translations = {
     mode_mcts_desc: 'Monte Carlo Tree Search Algorithmus',
     mode_pi: '🎯 π berechnen',
     mode_pi_desc: 'π mit Zufallspunkten schätzen',
+    mode_demo: '🎬 Demo AI vs AI',
+    mode_demo_desc: 'Präsentationsmodus für MCTS Erklärung',
     light: '☀️ Hell',
     dark: '🌙 Dunkel',
     blue: '💙 Blau',
@@ -187,6 +193,10 @@ export const StartScreen: React.FC<StartScreenProps> = ({
             <button className="mode-btn" onClick={() => onStart('pi')}>
               <span className="mode-title">{t.mode_pi}</span>
               <span className="mode-desc">{t.mode_pi_desc}</span>
+            </button>
+            <button className="mode-btn demo" onClick={() => onStart('demo')}>
+              <span className="mode-title">{t.mode_demo}</span>
+              <span className="mode-desc">{t.mode_demo_desc}</span>
             </button>
           </div>
         </div>

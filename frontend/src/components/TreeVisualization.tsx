@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Tree, TreeNode, BoardState } from '../types';
 import { getChildren, getParent, calculateUCB1 } from '../tree';
 import { Language } from './StartScreen';
+import 'katex/dist/katex.min.css';
+import { BlockMath } from 'react-katex';
 
 type Theme = 'dark' | 'light' | 'blue' | 'forest' | 'sunset' | 'purple' | 'ocean' | 'glass';
 
@@ -29,6 +31,9 @@ interface TreeVisualizationProps {
   iterationProgress?: string;
   theme?: Theme;
   language?: Language;
+  symbolTransform?: (cell: string) => string;
+  alwaysShowUcb?: boolean;
+  hideUcbPanel?: boolean;
 }
 
 interface ViewState {
@@ -172,7 +177,10 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
   actionProgress,
   iterationProgress,
   theme = 'dark',
-  language = 'en'
+  language = 'en',
+  symbolTransform,
+  alwaysShowUcb = false,
+  hideUcbPanel = false
 }) => {
   const labels = PLAYER_LABELS[language];
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -303,13 +311,16 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
         ctx.lineWidth = 0.5;
         ctx.stroke();
         
-        // Draw player label (H/M, Č/S, etc.)
+        // Draw player label (H/M, Č/S, etc. or custom transform)
         if (tile) {
           ctx.fillStyle = colors.xoText;
           ctx.font = `bold ${tileSize * 0.55}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          const displayLabel = tile === 'X' ? playerLabels.X : playerLabels.O;
+          // Use symbolTransform if provided, otherwise use playerLabels
+          const displayLabel = symbolTransform 
+            ? symbolTransform(tile)
+            : (tile === 'X' ? playerLabels.X : playerLabels.O);
           ctx.fillText(displayLabel, tileX + tileSize / 2, tileY + tileSize / 2);
         }
       }
@@ -333,7 +344,7 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
     if (tree && node.id !== 0) {
       const parent = getParent(tree, node);
       if (parent && node.data.simulations > 0) {
-        const ucb = calculateUCB1(node, parent).toFixed(1);
+        const ucb = calculateUCB1(node, parent).toFixed(3);
         ctx.fillStyle = colors.textSecondary;
         ctx.fillText('ucb:', 6, statsY + 14);
         ctx.fillStyle = colors.text;
@@ -465,7 +476,7 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
       
       ctx.restore();
     }
-  }, [tree, hoveredNodeId, colors, getNodeColor]);
+  }, [tree, hoveredNodeId, colors, getNodeColor, symbolTransform]);
 
   // Draw tree recursively
   const drawTree = useCallback((ctx: CanvasRenderingContext2D, node: TreeNode, board: BoardState) => {
@@ -669,16 +680,6 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
     }
   };
 
-  if (!tree) {
-    return (
-      <div className="visualization-panel" ref={containerRef}>
-        <div className="visualization-placeholder">
-          Zaženi MCTS za vizualizacijo
-        </div>
-      </div>
-    );
-  }
-
   // Find currently active node (selected/expanded/simulated/backpropagated)
   const getCurrentActiveNode = (): TreeNode | null => {
     if (!tree) return null;
@@ -787,8 +788,9 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
 
   return (
     <div className="visualization-panel" ref={containerRef}>
-      {/* UCB Panel Toggle Button (when hidden) */}
-      {ucbPanelHidden && (
+      {/* UCB Panel Toggle Button (when hidden) - only show if not alwaysShowUcb */}
+      {/* UCB Panel Toggle Button (when hidden) - only show if not alwaysShowUcb and not hideUcbPanel */}
+      {!hideUcbPanel && !alwaysShowUcb && ucbPanelHidden && (
         <button 
           className="ucb-panel-toggle show"
           onClick={() => setUcbPanelHidden(false)}
@@ -798,23 +800,26 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
         </button>
       )}
 
-      {/* UCB Calculator Panel */}
-      <div className={`ucb-panel ${ucbPanelHidden ? 'hidden' : ''}`}>
+      {/* UCB Calculator Panel - hide completely if hideUcbPanel */}
+      {!hideUcbPanel && (
+      <div className={`ucb-panel ${!alwaysShowUcb && ucbPanelHidden ? 'hidden' : ''}`}>
         <div className="ucb-header">
           <h3>{ut.title}</h3>
-          <button 
-            className="ucb-hide-btn"
-            onClick={() => setUcbPanelHidden(true)}
-            title="Skrij panel"
-          >
-            ←
-          </button>
+          {!alwaysShowUcb && (
+            <button 
+              className="ucb-hide-btn"
+              onClick={() => setUcbPanelHidden(true)}
+              title="Skrij panel"
+            >
+              ←
+            </button>
+          )}
         </div>
         
         <div className="ucb-formula">
           <span className="formula-label">{ut.formula}</span>
-          <div className="formula-display">
-            UCB = <span className="formula-frac"><span className="frac-top">v</span><span className="frac-bottom">n</span></span> + C · √<span className="formula-frac"><span className="frac-top">ln(N)</span><span className="frac-bottom">n</span></span>
+          <div className="formula-display-katex">
+            <BlockMath math="UCB = \frac{v}{n} + C \cdot \sqrt{\frac{\ln(N)}{n}}" />
           </div>
         </div>
         
@@ -883,6 +888,7 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
           </div>
         </div>
       </div>
+      )}
 
       {canVisualize && (
         <div className="viz-toolbar">
