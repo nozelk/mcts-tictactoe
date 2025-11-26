@@ -406,7 +406,9 @@ function App() {
   const handleBackToStart = () => {
     setStarted(false);
     setGameStarted(false);
-    resetGame();
+    // Reset game state
+    setBoard([...EMPTY_BOARD]);
+    setWinner(null);
   };
 
   // If not started, show start screen
