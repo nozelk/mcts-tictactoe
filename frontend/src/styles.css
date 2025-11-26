@@ -2317,48 +2317,50 @@ html, body {
   color: var(--danger);
 }
 
-/* Phase Legend in Demo */
-.demo-legend {
+/* Phase Toolbar in Demo */
+.demo-phase-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background: var(--panel-bg);
   border-radius: 12px;
   border: 1px solid var(--border);
   padding: 10px 14px;
 }
 
-.demo-legend .legend-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.demo-legend .legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.demo-phase-toolbar .action-badge {
+  padding: 4px 12px;
+  border-radius: 6px;
   font-size: 12px;
-  color: var(--text);
+  font-weight: 600;
+  text-transform: capitalize;
+  color: white;
+  background: var(--text-secondary);
 }
 
-.demo-legend .legend-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.demo-legend .legend-dot.selection {
+.demo-phase-toolbar .action-badge.selection {
   background: #e94560;
 }
 
-.demo-legend .legend-dot.expansion {
+.demo-phase-toolbar .action-badge.expansion {
   background: #ffc107;
+  color: #1a1a2e;
 }
 
-.demo-legend .legend-dot.simulation {
+.demo-phase-toolbar .action-badge.simulation {
   background: #4cc9f0;
+  color: #1a1a2e;
 }
 
-.demo-legend .legend-dot.backpropagation {
+.demo-phase-toolbar .action-badge.backpropagation {
   background: #22c55e;
+}
+
+.demo-phase-toolbar .toolbar-progress,
+.demo-phase-toolbar .toolbar-iteration {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 /* Center - Game */

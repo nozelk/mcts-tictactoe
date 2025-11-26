@@ -613,26 +613,13 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
             )}
           </div>
 
-          {/* Phase Legend */}
-          <div className="demo-legend">
-            <div className="legend-items">
-              <div className="legend-item">
-                <div className="legend-dot selection"></div>
-                <span>{t.select}</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-dot expansion"></div>
-                <span>{t.expand}</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-dot simulation"></div>
-                <span>{t.simulate}</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-dot backpropagation"></div>
-                <span>{t.backprop}</span>
-              </div>
-            </div>
+          {/* Current Phase Toolbar */}
+          <div className="demo-phase-toolbar">
+            <span className={`action-badge ${actionTrace.length > 0 && actionTrace[currentIterationIdx] ? actionTrace[currentIterationIdx][currentActionIdx]?.kind || '' : ''}`}>
+              {getCurrentPhase() || '—'}
+            </span>
+            <span className="toolbar-progress">({actionProgress})</span>
+            <span className="toolbar-iteration">Iter: ({iterationProgress})</span>
           </div>
           
           {/* Game Board - in left panel */}
