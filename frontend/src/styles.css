@@ -2339,21 +2339,19 @@ html, body {
 }
 
 .demo-phase-toolbar .action-badge.selection {
-  background: #e94560;
+  background: var(--selection-color);
 }
 
 .demo-phase-toolbar .action-badge.expansion {
-  background: #ffc107;
-  color: #1a1a2e;
+  background: var(--expansion-color);
 }
 
 .demo-phase-toolbar .action-badge.simulation {
-  background: #4cc9f0;
-  color: #1a1a2e;
+  background: var(--simulation-color);
 }
 
 .demo-phase-toolbar .action-badge.backpropagation {
-  background: #22c55e;
+  background: var(--backprop-color);
 }
 
 .demo-phase-toolbar .toolbar-progress,
