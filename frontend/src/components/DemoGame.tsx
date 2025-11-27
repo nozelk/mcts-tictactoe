@@ -173,7 +173,7 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
   
   // Demo configuration
   const [config, setConfig] = useState<DemoConfig>({
-    ai1Iterations: 10,
+    ai1Iterations: 9,
     ai2Iterations: 100,
     seed: 1  // Fixed seed for reproducibility
   });
@@ -704,6 +704,7 @@ export function DemoGame({ theme, language, onBack }: DemoGameProps) {
             symbolTransform={toDisplaySymbol}
             alwaysShowUcb={false}
             hideUcbPanel={true}
+            perspectivePlayer={currentPlayer === 'ai1' ? 'X' : 'O'}
           />
         </div>
       </div>

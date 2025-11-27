@@ -34,6 +34,7 @@ interface TreeVisualizationProps {
   symbolTransform?: (cell: string) => string;
   alwaysShowUcb?: boolean;
   hideUcbPanel?: boolean;
+  perspectivePlayer?: 'X' | 'O';  // Which player's perspective for WIN/LOSS display
 }
 
 interface ViewState {
@@ -180,7 +181,8 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
   language = 'en',
   symbolTransform,
   alwaysShowUcb = false,
-  hideUcbPanel = false
+  hideUcbPanel = false,
+  perspectivePlayer = 'X'
 }) => {
   const labels = PLAYER_LABELS[language];
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -397,12 +399,14 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
         }
       }
       
-      if (winner === 'X') {
-        // Machine wins - from machine's perspective this is a win
+      // Determine WIN/LOSS from perspective of perspectivePlayer (default: X)
+      const perspective = perspectivePlayer || 'X';
+      if (winner === perspective) {
+        // Current perspective player wins
         resultText = labels.win;
         resultColor = '#10b981'; // Green
-      } else if (winner === 'O') {
-        // Human wins - from machine's perspective this is a loss
+      } else if (winner !== null) {
+        // Other player wins - this is a loss from current perspective
         resultText = labels.loss;
         resultColor = '#ef4444'; // Red
       }
